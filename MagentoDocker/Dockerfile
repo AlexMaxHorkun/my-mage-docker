@@ -1,5 +1,5 @@
-FROM ubuntu:18.04
-ARG php_ver=7.2
+FROM ubuntu:20.04
+ARG php_ver=7.4
 COPY install/basics.sh /etc/magento/system/install/
 COPY install/nginx.sh /etc/magento/system/install/
 COPY install/mysql.sh /etc/magento/system/install/
