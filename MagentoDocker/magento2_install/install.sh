@@ -50,6 +50,9 @@ sudo -u www-data php bin/magento cache:flush
 cp /etc/magento/resources/api-functional/install-config-mysql.php /var/www/magento2/dev/tests/api-functional/config/
 mv /etc/magento/resources/api-functional/rest.xml dev/tests/api-functional/phpunit.xml
 cp /etc/magento/system/resources/local_nginx.conf local_nginx.conf
+cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/phpunit.xml
+cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
+cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 service php7.2-fpm stop > /dev/null ||\
 service php7.1-fpm stop > /dev/null
 service php7.3-fpm stop > /dev/null ||\
