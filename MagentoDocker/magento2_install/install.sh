@@ -11,23 +11,13 @@ cp /etc/magento/system/resources/local_nginx.conf local_nginx.conf
 cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/phpunit.xml
 cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
 cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-service php7.3-fpm stop > /dev/null ||\
-service php7.4-fpm stop > /dev/null
-service php7.3-fpm start > /dev/null ||\
-service php7.4-fpm start > /dev/null
-service nginx restart > /dev/null ||\
-service apache2 restart > /dev/null
-service varnish start
-service cron stop
-service cron start
-service cron restart
 
 sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --amqp-host=127.0.0.1\
     --amqp-user=guest\
     --amqp-password=guest\
     --amqp-port=5672\
-    --db-host=127.0.0.1\
+    --db-host=magento-mysql\
     --db-name=magento\
     --db-user=magento\
     --db-password=12345abc\
@@ -45,7 +35,7 @@ sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --amqp-user=guest\
     --amqp-password=guest\
     --amqp-port=5672\
-    --db-host=127.0.0.1\
+    --db-host=magento-mysql\
     --db-name=magento\
     --db-user=magento\
     --db-password=12345abc\
@@ -56,7 +46,6 @@ sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --admin-password=12345abc\
     --admin-email=admin@test.com\
     --admin-firstname=admin\
-    --elasticsearch-host=127.0.0.1\
     --admin-lastname=admin
 
 sudo -u www-data php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-server=127.0.0.1 --cache-backend-redis-db=0 &&\
@@ -69,3 +58,14 @@ sudo -u www-data php bin/magento config:set system/full_page_cache/caching_appli
 sudo -u www-data php bin/magento config:set system/full_page_cache/varnish/backend_host "127.0.0.1" &&\
 sudo -u www-data php bin/magento config:set system/full_page_cache/varnish/backend_port "8080" &&\
 sudo -u www-data php bin/magento cache:flush
+
+service php7.3-fpm stop > /dev/null ||\
+service php7.4-fpm stop > /dev/null
+service php7.3-fpm start > /dev/null ||\
+service php7.4-fpm start > /dev/null
+service nginx restart > /dev/null ||\
+service apache2 restart > /dev/null
+service varnish start
+service cron stop
+service cron start
+service cron restart

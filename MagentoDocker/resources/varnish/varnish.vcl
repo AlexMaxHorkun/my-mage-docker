@@ -1,25 +1,25 @@
-# VCL version 5.0 is not supported so it should be 4.0 even though actually used Varnish version is 5
+# VCL version 5.0 is not supported so it should be 4.0 even though actually used Varnish version is 6
 vcl 4.0;
 
 import std;
-# The minimal Varnish version is 5.0
+# The minimal Varnish version is 6.0
 # For SSL offloading, pass the following header in your proxy server or load balancer: 'X-Forwarded-Proto: https'
 
 backend default {
-    .host = "localhost";
+    .host = "127.0.0.1";
     .port = "8080";
     .first_byte_timeout = 6000s;
     .probe = {
         .url = "/health_check.php";
-        .timeout = 10s;
-        .interval = 5s;
+        .timeout = 20s;
+        .interval = 10s;
         .window = 10;
         .threshold = 5;
    }
 }
 
 acl purge {
-    "localhost";
+
 }
 
 sub vcl_recv {
@@ -107,11 +107,6 @@ sub vcl_recv {
         #unset req.http.Https;
         #unset req.http.X-Forwarded-Proto;
         #unset req.http.Cookie;
-    }
-
-    # Authenticated GraphQL requests should not be cached by default
-    if (req.url ~ "/graphql" && req.http.Authorization ~ "^Bearer") {
-        return (pass);
     }
 
     return (hash);
@@ -235,7 +230,7 @@ sub vcl_hit {
             return (deliver);
         } else {
             # Hit after TTL and grace expiration
-            return (miss);
+            return (restart);
         }
     } else {
         # server is not healthy, retrieve from cache

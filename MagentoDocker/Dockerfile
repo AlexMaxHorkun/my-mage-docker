@@ -1,9 +1,7 @@
 FROM ubuntu:20.04
 ARG php_ver=7.4
-ARG mysql_ver=8.0
 COPY install/basics.sh /etc/magento/system/install/
 COPY install/nginx.sh /etc/magento/system/install/
-COPY install/mysql_${mysql_ver}.sh /etc/magento/system/install/mysql.sh
 COPY install/php${php_ver}.sh /etc/magento/system/install/php.sh
 COPY install/rabbitmq.sh /etc/magento/system/install/
 COPY install/redis.sh /etc/magento/system/install/
@@ -21,10 +19,10 @@ COPY resources/mftf /etc/magento/resources/mftf/
 COPY resources/api-functional /etc/magento/resources/api-functional/
 COPY resources/crontab /etc/magento/system/resources/
 COPY resources/varnish/ /etc/magento/system/resources/varnish/
+COPY resources/integration/ /etc/magento/system/resources/integration/
 EXPOSE 80 443 22
 USER root
 RUN /etc/magento/system/install/basics.sh
-RUN /etc/magento/system/install/mysql.sh
 RUN /etc/magento/system/install/php.sh
 RUN /etc/magento/system/install/nginx.sh
 RUN /etc/magento/system/install/rabbitmq.sh

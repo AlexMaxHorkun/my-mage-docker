@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 service ssh restart
-service mysql restart
 service php7.2-fpm restart > /dev/null ||\
 service php7.1-fpm restart > /dev/null
-chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
-service mysql restart
 service rabbitmq-server restart
 service cron restart
 redis-server &>/dev/null & disown

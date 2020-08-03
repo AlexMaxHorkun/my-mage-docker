@@ -5,7 +5,7 @@
  */
 
 return [
-    'db-host' => 'localhost',
+    'db-host' => 'magento-mysql',
     'db-user' => 'magento',
     'db-password' => '12345abc',
     'db-name' => 'magento_integration_tests',
