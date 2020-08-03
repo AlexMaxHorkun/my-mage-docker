@@ -3,7 +3,25 @@ service elasticsearch stop
 service elasticsearch start
 mkdir /var/www/magento2/pub/static
 cd /var/www/magento2 &&\
-chown -R www-data /var/www/magento2 &&\
+chown -R www-data /var/www/magento2
+
+cp /etc/magento/resources/api-functional/install-config-mysql.php /var/www/magento2/dev/tests/api-functional/config/
+mv /etc/magento/resources/api-functional/rest.xml dev/tests/api-functional/phpunit.xml
+cp /etc/magento/system/resources/local_nginx.conf local_nginx.conf
+cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/phpunit.xml
+cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
+cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
+service php7.3-fpm stop > /dev/null ||\
+service php7.4-fpm stop > /dev/null
+service php7.3-fpm start > /dev/null ||\
+service php7.4-fpm start > /dev/null
+service nginx restart > /dev/null ||\
+service apache2 restart > /dev/null
+service varnish start
+service cron stop
+service cron start
+service cron restart
+
 sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --amqp-host=127.0.0.1\
     --amqp-user=guest\
@@ -23,6 +41,10 @@ sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --elasticsearch-host=127.0.0.1\
     --admin-lastname=admin ||\
 sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
+    --amqp-host=127.0.0.1\
+    --amqp-user=guest\
+    --amqp-password=guest\
+    --amqp-port=5672\
     --db-host=127.0.0.1\
     --db-name=magento\
     --db-user=magento\
@@ -47,23 +69,3 @@ sudo -u www-data php bin/magento config:set system/full_page_cache/caching_appli
 sudo -u www-data php bin/magento config:set system/full_page_cache/varnish/backend_host "127.0.0.1" &&\
 sudo -u www-data php bin/magento config:set system/full_page_cache/varnish/backend_port "8080" &&\
 sudo -u www-data php bin/magento cache:flush
-cp /etc/magento/resources/api-functional/install-config-mysql.php /var/www/magento2/dev/tests/api-functional/config/
-mv /etc/magento/resources/api-functional/rest.xml dev/tests/api-functional/phpunit.xml
-cp /etc/magento/system/resources/local_nginx.conf local_nginx.conf
-cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/phpunit.xml
-cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
-cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-service php7.2-fpm stop > /dev/null ||\
-service php7.1-fpm stop > /dev/null
-service php7.3-fpm stop > /dev/null ||\
-service php7.4-fpm stop > /dev/null
-service php7.2-fpm start > /dev/null ||\
-service php7.1-fpm start > /dev/null
-service php7.3-fpm start > /dev/null ||\
-service php7.4-fpm start > /dev/null
-service nginx restart > /dev/null ||\
-service apache2 restart > /dev/null
-service varnish start
-service cron stop
-service cron start
-service cron restart

@@ -29,8 +29,6 @@ sed -i 's/max_execution_time = 30/max_execution_time = 18000/' /etc/php/7.3/fpm/
 sed -i 's/zlib.output_compression = Off/zlib.output_compression = on/' /etc/php/7.3/fpm/php.ini
 sed -i 's/max_execution_time = 30/max_execution_time = 18000/' /etc/php/7.3/cli/php.ini
 cp /etc/magento/system/resources/xdebug.ini /etc/php/7.3/mods-available/
-cp /etc/magento/system/resources/magento2_php73.conf /etc/magento/system/resources/magento2.conf
-cp /etc/magento/system/resources/magento2SSL_php73.conf /etc/magento/system/resources/magento2ssl.conf
 echo 'PHP_IDE_CONFIG="serverName=mage.ua"' >> /etc/environment
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&\
 php composer-setup.php &&\
