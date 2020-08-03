@@ -1,0 +1,1 @@
+docker build . -t magento24 --no-cache --build-arg php_ver=7.4

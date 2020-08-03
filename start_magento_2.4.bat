@@ -1,0 +1,2 @@
+docker network create -d bridge magento2-network
+docker run -td --name "magento-mysql" -p 23306:3306 --network "magento2-network" mysql80 && docker run -td --name magento24 -p 80:80 -p 22222:22 -p 4433:443 --network "magento2-network" magento24
