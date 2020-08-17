@@ -18,7 +18,8 @@ apt install -yqf sudo\
     nano\
     software-properties-common\
     sendmail\
-    unzip
+    unzip\
+    mysql-client
 service cron stop
 echo "\n127.0.0.1 mage.ua\n" > /etc/hosts
 echo 'root:12345abc' | chpasswd
