@@ -9,6 +9,7 @@ cp /etc/magento/resources/api-functional/install-config-mysql.php /var/www/magen
 mv /etc/magento/resources/api-functional/rest.xml dev/tests/api-functional/phpunit.xml
 cp /etc/magento/system/resources/local_nginx.conf local_nginx.conf
 cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/phpunit.xml
+cp /etc/magento/system/resources/integration/phpunit.23.xml dev/tests/integration/phpunit.23.xml
 cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
 cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 
