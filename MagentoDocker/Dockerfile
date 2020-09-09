@@ -13,7 +13,7 @@ COPY install/elasticsearch.sh /etc/magento/system/install/
 COPY resources/magento2_php${php_ver}.conf /etc/magento/system/resources/magento2.conf
 COPY resources/local_nginx.conf /etc/magento/system/resources/
 COPY resources/xdebug.ini /etc/magento/system/resources/
-COPY init/init.sh /etc/magento/system/init/
+COPY init /etc/magento/system/init/
 COPY magento2_install /etc/magento/magento2/install/
 COPY resources/mftf /etc/magento/resources/mftf/
 COPY resources/api-functional /etc/magento/resources/api-functional/
