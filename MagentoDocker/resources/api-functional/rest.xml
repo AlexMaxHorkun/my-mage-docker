@@ -43,7 +43,7 @@
         <!--Generate documentation from REST tests and put it into var/log/rest-documentation directory-->
         <const name="GENERATE_REST_DOCUMENTATION" value="false" />
 
-        <ini name="date.timezone" value="America/Los_Angeles"/>
+        <ini name="date.timezone" value="America/Chicago"/>
 
         <!-- Semicolon-separated 'glob' patterns, that match global XML configuration files -->
         <const name="TESTS_GLOBAL_CONFIG_DIR" value="../../../app/etc"/>

@@ -41,7 +41,7 @@
         <!-- Define XDEBUG_SESSION cookie value-->
         <const name="TESTS_XDEBUG_SESSION" value="phpstorm" />
 
-        <ini name="date.timezone" value="America/Los_Angeles"/>
+        <ini name="date.timezone" value="America/Chicago"/>
         <ini name="soap.wsdl_cache_enabled" value="0" />
 
         <!-- Semicolon-separated 'glob' patterns, that match global XML configuration files -->
