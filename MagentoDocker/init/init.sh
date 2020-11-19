@@ -9,7 +9,7 @@ Xvfb :11 -ac &>/etc/magento/logs/mtf_xvfb.log & disown
 export DISPLAY=:11 && java -jar /etc/magento/resources/mtf/selenium2.53.1.jar &>/etc/magento/logs/mtf_selenium.log & disown
 Xvfb :10 -ac &>/etc/magento/logs/mftf_xvfb.log & disown
 export DISPLAY=:10 && java -jar /etc/magento/resources/mftf/selenium3.14.0.jar -port 44444 &>/etc/magento/logs/mftf_selenium.log & disown
-varnishid = $(ps aux | egrep -io "varnish\s+([0-9]+)" | egrep -o "[0-9]+")
-vcacheid = $(ps aux | egrep -io "vcache\s+([0-9]+)" | egrep -o "[0-9]+")
-kill -9 $varnishid $vcacheid
+varnishid=$(ps aux | egrep -io "varnish\s+([0-9]+)" | egrep -o "[0-9]+")
+vcacheid=$(ps aux | egrep -io "vcache\s+([0-9]+)" | egrep -o "[0-9]+")
+kill -9 "$varnishid" "$vcacheid"
 echo "Initialized"
