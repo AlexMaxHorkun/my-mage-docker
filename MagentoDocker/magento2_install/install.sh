@@ -12,6 +12,7 @@ cp /etc/magento/system/resources/integration/phpunit.xml dev/tests/integration/p
 cp /etc/magento/system/resources/integration/phpunit.23.xml dev/tests/integration/phpunit.23.xml
 cp /etc/magento/system/resources/integration/config-global.php dev/tests/integration/etc/config-global.php
 cp /etc/magento/system/resources/integration/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
+composer remove magento/magento2-functional-testing-framework
 
 sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --amqp-host=127.0.0.1\
