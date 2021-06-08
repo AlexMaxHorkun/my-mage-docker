@@ -20,7 +20,7 @@ return [
     'amqp-port' => '5672',
     'amqp-user' => 'guest',
     'amqp-password' => 'guest',
-    'elasticsearch-host' => '127.0.0.1',
+    'elasticsearch-host' => 'magento-elasticsearch',
     'elasticsearch-port' => '9200',
     'elasticsearch-index-prefix' => 'integration_test_'
 ];

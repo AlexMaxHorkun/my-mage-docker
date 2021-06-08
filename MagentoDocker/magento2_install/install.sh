@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-service elasticsearch stop
-service elasticsearch start
 mkdir /var/www/magento2/pub/static
 cd /var/www/magento2 &&\
 chown -R www-data /var/www/magento2
@@ -30,7 +28,7 @@ sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --admin-password=12345abc\
     --admin-email=admin@test.com\
     --admin-firstname=admin\
-    --elasticsearch-host=127.0.0.1\
+    --elasticsearch-host=magento-elasticsearch\
     --admin-lastname=admin ||\
 sudo -u www-data php bin/magento setup:install --backend-frontname=admin\
     --amqp-host=127.0.0.1\

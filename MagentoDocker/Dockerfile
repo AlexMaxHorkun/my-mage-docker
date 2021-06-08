@@ -9,7 +9,6 @@ COPY install/functional_tests_requirements.sh /etc/magento/system/install/
 COPY install/mftf_requirements.sh /etc/magento/system/install/
 COPY install/finalize.sh /etc/magento/system/install/
 COPY install/varnish.sh /etc/magento/system/install/
-COPY install/elasticsearch.sh /etc/magento/system/install/
 COPY resources/magento2_php${php_ver}.conf /etc/magento/system/resources/magento2.conf
 COPY resources/local_nginx.conf /etc/magento/system/resources/
 COPY resources/xdebug.ini /etc/magento/system/resources/
@@ -30,6 +29,5 @@ RUN /etc/magento/system/install/redis.sh
 RUN /etc/magento/system/install/functional_tests_requirements.sh
 RUN /etc/magento/system/install/mftf_requirements.sh
 RUN /etc/magento/system/install/varnish.sh
-RUN /etc/magento/system/install/elasticsearch.sh
 RUN /etc/magento/system/install/finalize.sh
 CMD /etc/magento/system/init/init.sh && bin/bash
