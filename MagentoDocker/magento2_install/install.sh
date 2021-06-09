@@ -65,7 +65,6 @@ service php7.3-fpm start > /dev/null ||\
 service php7.4-fpm start > /dev/null
 service nginx restart > /dev/null ||\
 service apache2 restart > /dev/null
-service varnish start
 service cron stop
 service cron start
 service cron restart
