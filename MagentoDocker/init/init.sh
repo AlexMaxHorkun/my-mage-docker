@@ -11,4 +11,3 @@ Xvfb :10 -ac &>/etc/magento/logs/mftf_xvfb.log & disown
 export DISPLAY=:10 && java -jar /etc/magento/resources/mftf/selenium3.14.0.jar -port 44444 &>/etc/magento/logs/mftf_selenium.log & disown
 
 echo "Initialized"
-return 0;
