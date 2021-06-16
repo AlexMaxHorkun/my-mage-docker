@@ -1,3 +1,73 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: magento24-storage
+  labels:
+    type: local
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 11Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: "/run/desktop/mnt/host/c/magento/magento24data"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - docker-desktop
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: magento24-service-storage
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mysql80-storage
+  labels:
+    type: local
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 11Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: "/run/desktop/mnt/host/c/magento/mysql80data"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - docker-desktop
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysql80-service-storage
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,42 +87,60 @@ spec:
       containers:
         - name: magento24-container-kube
           image: ogorkunad/magento-env-24:0.9
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "while true; service ssh start; do sleep 30; done;" ]
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
             - name: ssh
               containerPort: 22
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: magento23-deployment
-  labels:
-    app: magento23
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: magento23
-  template:
-    metadata:
-      labels:
-        app: magento23
-    spec:
-      containers:
-        - name: magento23-container-kube
-          image: ogorkunad/magento-env-23:0.9
-          imagePullPolicy: IfNotPresent
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "while true; service ssh start; do sleep 30; done;" ]
-          ports:
-            - name: http
-              containerPort: 8080
-            - name: ssh
-              containerPort: 22
+          volumeMounts:
+            - mountPath: /var/www/magento2
+              name: magento24-storage
+          command: [ "/bin/bash" ]
+          args:
+            - "-c"
+            - "/etc/magento/system/init/init.sh; /etc/magento/system/init/restart_magento.sh; while true; echo \"Working...\n\"; do sleep 10; done;"
+      volumes:
+        - name: magento24-storage
+          persistentVolumeClaim:
+            claimName: magento24-service-storage
+#Uncomment to make Magento2.3 deployment available then comment out 2.4
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: magento23-deployment
+#  labels:
+#    app: magento23
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: magento23
+#  template:
+#    metadata:
+#      labels:
+#        app: magento23
+#    spec:
+#      containers:
+#        - name: magento23-container-kube
+#          image: ogorkunad/magento-env-23:0.9
+#          imagePullPolicy: IfNotPresent
+#          command: [ "/bin/bash" ]
+#          args:
+#            - "-c"
+#            - "/etc/magento/system/init/init.sh; /etc/magento/system/init/restart_magento.sh; while true; echo \"Working...\n\"; do sleep 10; done;"
+#          ports:
+#            - name: http
+#              containerPort: 8080
+#            - name: ssh
+#              containerPort: 22
+#          volumeMounts:
+#            - name: magento23-storage
+#              mountPath: /var/magento/magento23
+#      volumes:
+#        - name: magento-storage
+#          hostPath: /var/magento/magento23
 ---
 apiVersion: v1
 kind: Service
@@ -97,30 +185,44 @@ spec:
           ports:
             - name: mysqlaccess
               containerPort: 3306
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql57-deployment
-  labels:
-    app: mysql57
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql57
-  template:
-    metadata:
-      labels:
-        app: mysql57
-    spec:
-      containers:
-        - name: mysql57-container-kube
-          image: ogorkunad/magento-mysql-57:1.0
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: mysqlaccess
-              containerPort: 3306
+          volumeMounts:
+            - name: mysql80-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql80-storage
+          persistentVolumeClaim:
+            claimName: mysql80-service-storage
+#Uncomment to make Mysql5.7 available for Magento2.3, comment out mysql80 when not using to save on resources
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: mysql57-deployment
+#  labels:
+#    app: mysql57
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: mysql57
+#  template:
+#    metadata:
+#      labels:
+#        app: mysql57
+#    spec:
+#      containers:
+#        - name: mysql57-container-kube
+#          image: ogorkunad/magento-mysql-57:1.0
+#          imagePullPolicy: IfNotPresent
+#          ports:
+#            - name: mysqlaccess
+#              containerPort: 3306
+#          volumeMounts:
+#            - name: mysql57-storage
+#              mountPath: /var/magento/magentomysql57
+#      volumes:
+#        - name: mysql57-storage
+#          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -185,6 +287,8 @@ spec:
   selector:
     app: magento-elasticsearch
 ---
+#After done installing Magento scale Varnish deployment to 0 and then right after to 1.
+#This will effectively restart Varnish and connect it to newly installed Magento.
 apiVersion: apps/v1
 kind: Deployment
 metadata:

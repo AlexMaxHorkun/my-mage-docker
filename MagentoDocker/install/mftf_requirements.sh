@@ -5,8 +5,9 @@ cd /etc/magento/system &&\
 wget https://dl.google.com/linux/linux_signing_key.pub &&\
 apt install -yqf gpg-agent &&\
 apt-key add linux_signing_key.pub &&\
-apt update &&\
-apt install -yqf google-chrome-stable &&\
+apt update
+apt install -yqf google-chrome-stable ||\
+apt install -yqf chromium-browser
 chmod +x /etc/magento/resources/mftf/chromedriver &&\
 ln -s /etc/magento/resources/mftf/chromedriver /usr/bin/chromedriver &&\
 mkdir /etc/magento/mftf && mkdir /etc/magento/mftf/logs
