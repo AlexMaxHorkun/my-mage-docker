@@ -1,1 +1,1 @@
-docker build . -t magento24 --no-cache --build-arg php_ver=7.4
+docker buildx build . -t ogorkunad/magento-env-24:0.9 --no-cache --build-arg php_ver=7.4 --platform=linux/amd64,linux/arm64/v8 --push

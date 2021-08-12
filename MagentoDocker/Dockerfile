@@ -14,6 +14,7 @@ COPY resources/xdebug.ini /etc/magento/system/resources/
 COPY init /etc/magento/system/init/
 COPY magento2_install /etc/magento/magento2/install/
 COPY resources/mftf /etc/magento/resources/mftf/
+COPY resources/mftf/functional.suite.yml${php_ver} /etc/magento/resources/mftf/functional.suite.yml
 COPY resources/api-functional /etc/magento/resources/api-functional/
 COPY resources/crontab /etc/magento/system/resources/
 COPY resources/integration/ /etc/magento/system/resources/integration/
