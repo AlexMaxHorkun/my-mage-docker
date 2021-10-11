@@ -2,8 +2,8 @@
 
 cd /var/www/magento2
 composer config minimum-stability dev
-composer config "repositories.$1" path "./$1/*" &&\
-composer require "$2" &&\
+composer config "repositories.bundled" path "./extensions/*/*" &&\
+composer require "$1" &&\
 chown -R www-data:www-data ./ &&\
 sudo -u www-data php bin/magento module:enable --all &&\
 sudo -u www-data php bin/magento setup:upgrade
